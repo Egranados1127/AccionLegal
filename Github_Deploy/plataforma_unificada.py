@@ -363,7 +363,7 @@ elif rol_usuario == "👤 Consola de Asesor (Copiloto IA)":
                             else: st.session_state[f'ia_canal_{id_sel}'] = "LLAMADA"
                             
                         except Exception as e:
-                            st.error(f"ERROR REAL IA: {str(e)[:300]} | Tipo: {type(e).__name__}")
+                            st.error("🚀 Los Agentes IA se encuentran saturados. Por favor, reintente en unos segundos.")
 
                 # Renderizar estado guardado para que no se pierda si da Clic por ahí
                 if f'ia_response_{id_sel}' in st.session_state:
