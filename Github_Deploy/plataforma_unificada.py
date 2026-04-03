@@ -350,15 +350,17 @@ elif rol_usuario == "👤 Consola de Asesor (Copiloto IA)":
                         3. Debajo del encabezado, redacta el guión o texto final usando Psicología Económica Nudge, de impacto, sin saludos largos.
                         """
                         try:
-                            resp = model.generate_content(p).text
+                            resp_completa = model.generate_content(p)
+                            resp = resp_completa.text
                             st.session_state[f'ia_response_{id_sel}'] = resp
                             
-                            # Parser sencillo
                             if "WHATSAPP" in resp.upper(): st.session_state[f'ia_canal_{id_sel}'] = "WHATSAPP"
                             elif "CORREO" in resp.upper(): st.session_state[f'ia_canal_{id_sel}'] = "CORREO"
                             else: st.session_state[f'ia_canal_{id_sel}'] = "LLAMADA"
                             
-                        except: st.error("Comprueba tu conexión API.")
+                        except Exception as e: 
+                            st.error(f"EL ERROR REAL ES: {str(e)}")
+                            st.error(f"Llave usada en la nube empieza con: {api_key_gemini[:10]}...")
 
                 # Renderizar estado guardado para que no se pierda si da Clic por ahí
                 if f'ia_response_{id_sel}' in st.session_state:
