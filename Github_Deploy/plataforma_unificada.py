@@ -66,7 +66,11 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-model = genai.GenerativeModel('gemini-2.5-flash')
+try:
+    # Intenta leer la llave secreta desde la Bóveda de Streamlit Cloud
+    api_key_gemini = st.secrets["GEMINI_API_KEY"]
+except:
+    # Llave dummy de protección para cuando suba a Github
     api_key_gemini = "TU_NUEVA_LLAVE_API_AQUI"
 
 genai.configure(api_key=api_key_gemini)
@@ -350,17 +354,16 @@ elif rol_usuario == "👤 Consola de Asesor (Copiloto IA)":
                         3. Debajo del encabezado, redacta el guión o texto final usando Psicología Económica Nudge, de impacto, sin saludos largos.
                         """
                         try:
-                            resp_completa = model.generate_content(p)
-                            resp = resp_completa.text
+                            resp = model.generate_content(p).text
                             st.session_state[f'ia_response_{id_sel}'] = resp
                             
+                            # Parser sencillo
                             if "WHATSAPP" in resp.upper(): st.session_state[f'ia_canal_{id_sel}'] = "WHATSAPP"
                             elif "CORREO" in resp.upper(): st.session_state[f'ia_canal_{id_sel}'] = "CORREO"
                             else: st.session_state[f'ia_canal_{id_sel}'] = "LLAMADA"
                             
-                        except Exception as e: 
-                            st.error(f"EL ERROR REAL ES: {str(e)}")
-                            st.error(f"Llave usada en la nube empieza con: {api_key_gemini[:10]}...")
+                        except Exception as e:
+                            st.error(f"ERROR REAL IA: {str(e)[:300]} | Tipo: {type(e).__name__}")
 
                 # Renderizar estado guardado para que no se pierda si da Clic por ahí
                 if f'ia_response_{id_sel}' in st.session_state:
