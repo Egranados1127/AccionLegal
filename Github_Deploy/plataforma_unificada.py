@@ -66,7 +66,14 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-genai.configure(api_key="AIzaSyDiOIiDf2UHuW5E8OGvaoaMtxUUJKVJQ0c")
+try:
+    # Intenta leer la llave secreta desde la Bóveda de Streamlit Cloud
+    api_key_gemini = st.secrets["GEMINI_API_KEY"]
+except:
+    # Llave dummy de protección para cuando suba a Github
+    api_key_gemini = "TU_NUEVA_LLAVE_API_AQUI"
+
+genai.configure(api_key=api_key_gemini)
 try:
     m_validos = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
     n_modelo = [m for m in m_validos if 'flash' in m or 'pro' in m][0] if m_validos else 'gemini-pro'
