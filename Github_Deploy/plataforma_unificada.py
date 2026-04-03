@@ -75,7 +75,9 @@ except:
     model = genai.GenerativeModel('gemini-pro')
 
 def get_bd_data():
-    conn = sqlite3.connect('demo_cartera_accion_legal.sqlite')
+    import os
+    db_path = os.path.join(os.path.dirname(__file__), 'demo_cartera_accion_legal.sqlite')
+    conn = sqlite3.connect(db_path)
     df_deudores = pd.read_sql_query("SELECT d.*, c.nombre_empresa, c.sector, c.cartera_asignada_total FROM deudores d JOIN empresas_clientes c ON d.id_cliente = c.id_cliente", conn)
     df_gestiones = pd.read_sql_query("SELECT * FROM gestiones", conn)
     df_asesores = pd.read_sql_query("SELECT * FROM asesores", conn)
