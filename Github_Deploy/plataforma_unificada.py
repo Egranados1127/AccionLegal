@@ -66,7 +66,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-genai.configure(api_key="AIzaSyDzm2KkOUtXl-hwbiTBgZz59k87rF0EOZY")
+genai.configure(api_key="AIzaSyDiOIiDf2UHuW5E8OGvaoaMtxUUJKVJQ0c")
 try:
     m_validos = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
     n_modelo = [m for m in m_validos if 'flash' in m or 'pro' in m][0] if m_validos else 'gemini-pro'
